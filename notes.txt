@@ -1,0 +1,33 @@
+Email framework/templates
+\\simfilesl01
+in file browser
+
+> public > _studio > Documents
+
+studio = web and campaign
+
+
+
+195.143.229.171
+
+
+SELECT *
+FROM DATA_MEMO_TV_VOTE_RESULTS
+
+
+
+CREATE VIEW [Memo_tv_votes] AS
+SELECT *
+FROM USERS_MEMO_TV_VOTERS_AM
+
+ALTER VIEW
+
+********************ACTUAL QUERY
+SELECT GUID, TITLE, count(GUID) AS VOTES 
+FROM DATA_Memo_TV_Vote_Results
+GROUP BY GUID, TITLE
+ORDER BY VOTES DESC
+
+
+********************Content renderer	
+https://aca.emsecure.net/scripts/CR/empty.aspx

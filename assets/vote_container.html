@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<style>
+	* {
+		box-sizing: border-box;
+	}
+	.vote_item {
+		width:176px;
+		float:left;
+		margin-right:20px;
+		padding:10px;
+		border:1px solid #575757;
+	}
+	a.vote {
+		cursor:pointer;
+		background:green;
+		padding:20px;
+		display:block;
+	}
+	a.vote:disabled {
+		background:grey;
+	}
+	.not-active {
+	   pointer-events: none;
+	   cursor: default;
+	}
+</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	<script type="text/javascript" src="scripts/main.js"></script>
+	<script>
+		$(function(){
+			var $voteLinks = $('a.vote');
+			$voteLinks.each(function(i){
+				var $this = this;
+				var index = 0;
+				$($this).prop("disabled", false);
+				$($this).attr('id', i);
+				$(this).on('click', function(e){
+					e.preventDefault();
+					$($voteLinks).addClass('not-active').fadeOut(100);
+				})
+				i++;
+			})
+		//Do the AJAX call
+		$.ajax({
+			url: "http://amc21.co.uk/assets/programs_cleaned.json",
+			type: "GET",
+			dataType: "jsonp",
+			//Callback on success
+			success: function(d){
+				
+				//var response = eval('(' + d + ')');
+				var target = document.getElementById("AJAX_RESULTS");
+				results.innerHTML = d;
+			}, 
+			//Error handler
+			error: function(){
+				var results = document.getElementById("AJAX_ERROR");
+				results.innerHTML = 'An error occured. '+status;
+			}
+		});
+		});
+	</script>
+</head>
+	<body>
+
+
+
+
+<div class="vote_cotnainer">
+	<div class="vote_item">
+		<h3>Title</h3>
+		<a class="vote">Vote</a>
+		<span class="percentage">42%</span>
+
+
+	</div>
+	<div class="vote_item">
+		<h3>Title</h3>
+		<a class="vote">Vote</a>
+		<span class="percentage">42%</span>
+
+
+	</div>
+	<div class="vote_item">
+		<h3>Title</h3>
+		<a class="vote">Vote</a>
+		<span class="percentage">42%</span>
+
+
+	</div>
+	<div class="vote_item">
+		<h3>Title</h3>
+		<a class="vote">Vote</a>
+		<span class="percentage">42%</span>
+
+
+	</div>
+</div>
+<h3 id="AJAX_ERROR"></h3>
+<div id="AJAX_RESULTS"></div>
+	</body>
+</html>

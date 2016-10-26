@@ -1,0 +1,108 @@
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<style type="text/css">* {
+		box-sizing: border-box;
+	}
+.vote_item {
+	width: 176px;
+	float: left;
+	margin-right: 20px;
+	padding: 10px;
+	border: 1px solid #575757;
+}
+a.vote {
+	cursor: pointer;
+	background: green;
+	padding: 20px;
+	display: block;
+}
+a.vote:disabled {
+	background: grey;
+}
+.not-active {
+	pointer-events: none;
+	cursor: default;
+}
+#email_check {
+	display: none;
+	margin-left: -9999px;
+	position: absolute;
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script>
+		$(function(){
+
+		//Do the AJAX call
+		$.ajax({
+			url: "https://aca.emsecure.net/scripts/CR/empty.aspx?ID=Ji6fs5BYHaWx6fzISRw5Aa8tQc0OPHPT0TtuVvtsw39K3RaflPLPaEhIMLNTD%2BA_5CuNnXoQtptJJJ",
+			  
+			//Callback on success
+			success: function(data){
+				
+				var target = $('.vote_container');
+				$(function(){
+					var $data = JSON.parse(data);
+					var vote_info = []; // Array to store voted for program
+					var container = []; // Array for HTML elements.
+			
+					$.each($data.channel.items, function(i) {
+						// Build the vote UI elements
+						container += [
+										"<div class='vote_item'>",
+										"<h3 class='title'>" + this.item.title + "</h3>",
+										"<a href='#' data-guid='" + this.item.guid + "' class='vote'>Vote!</a>",
+										"<span class='percentage'>42%</span>",
+										"</div>"
+									].join("");
+						
+					});
+					
+					$(container).appendTo('.vote_container');
+					
+					// Hanlde the click/vote functionality.
+					// Kill links after one is clicked.
+					var $voteLinks = $('a.vote');
+					$voteLinks.each(function(i){
+						var $this = this;
+						var index = 0;
+						$($this).prop("disabled", false);
+						$($this).attr('id', 'link-vote-' + i);
+						$(this).on('click', function(e){
+							e.preventDefault();
+							
+							$($voteLinks).addClass('not-active').fadeOut(100);
+							vote_info += [
+								$(this).siblings('h3.title').text(),
+								$(this).attr('data-guid')
+							].join(",");
+							console.log(vote_info);
+						})
+						i++;
+					})
+			
+				});
+			}, 
+			//Error handler
+			error: function(){
+				var results = document.getElementById("AJAX_ERROR");
+				results.innerHTML = 'An error occured. '+status+ ': ' + err;
+			}
+		});
+		});
+	</script>
+<h3>~REQUEST.REMOTE_ADDR~</h3>
+
+<p>~IP_ADDRESS~</p>
+<!---->
+<form name="vote-program">
+      <fieldset class="hidden">
+		<input type="text" value="guid">
+		<input type="text" value="title">
+		<input type="text" value="ip_address">
+		<label for="email_check">
+          <input name="email_check" type="text" id="email_check">
+        </label>
+  </fieldset>
+    </form>
+<div class="vote_container"> </div>
